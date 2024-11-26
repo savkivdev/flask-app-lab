@@ -18,7 +18,7 @@ body {
 nav ul {
     list-style-type: none;
     padding: 0;
-    display: flex;
+    #display: flex;
     justify-content: center;
     background-color: #2c3e50;
     border-radius: 8px;
@@ -54,6 +54,7 @@ section h2 {
 }
 
 section {
+    display: block;
     padding: 30px 20px;
     background-color: #ffffff;
     margin-top: 20px;
@@ -89,3 +90,193 @@ header img {
 header img:hover {
     transform: scale(1.05);
 }
+
+
+    section h2 {
+        color: #333;
+        border-bottom: 2px solid #eaeaea;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    /* Стилі секцій */
+    section {
+        /*margin-top: 50px;*/
+        padding: 20px 0;
+        background-color: #fafafa;
+        border-radius: 0px;
+
+    }
+
+   .resume-nav .resume1-ul {
+    list-style-type: none;
+    padding: 0;
+    background-color: #ffffff;
+    width: 100%;
+    display: block;
+
+}
+.resume1-ul li {
+    margin-bottom: 10px; /* Відстань між пунктами списку */
+}
+.resume-nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.resume-nav ul {
+    list-style-type: none; /* Зняти маркери */
+    padding: 0; /* Зняти відступи */
+    background-color: #2c3e50; /* Темний фон */
+    width: 100%; /* Ширина меню на всю сторінку */
+    display: flex; /* Використовуємо флексбокс для вирівнювання */
+    justify-content: center; /* Вирівнюємо елементи по горизонталі */
+    align-items: center; /* Вирівнюємо елементи по вертикалі */
+}
+
+.resume-nav ul li {
+    margin: 0 10px; /* Горизонтальні відступи між пунктами меню */
+}
+
+.resume-nav ul li a {
+    text-decoration: none; /* Зняти підкреслення */
+    color: white; /* Білий текст */
+    padding: 12px 20px; /* Внутрішні відступи */
+    display: inline-block; /* Встановлює елементи в рядок */
+    text-align: center; /* Вирівнювання тексту по центру */
+    transition: background-color 0.3s ease; /* Ефект переходу для фону */
+}
+
+.resume-nav nav ul li a:hover {
+    background-color: #575757; /* Колір фону при наведенні */
+}
+
+
+    header img {
+        max-width: 250px;
+        border-radius: 50%;
+        display: block;
+        margin: 20px auto;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+
+
+
+
+
+
+
+
+/*
+
+    .hi-head-banner {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        width: 100%;
+    }
+
+    .hi-nav {
+
+    }
+
+
+    .hi-nav ul {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        justify-content: space-around;
+        background-color: #ffffff;
+    }
+
+    .hi-nav ul li {
+        display: inline;
+    }
+
+    .hi-nav ul li a {
+        text-decoration: none;
+        color: rgb(0, 0, 0);
+        padding: 14px 20px;
+        display: block;
+        transition: background-color 0.3s ease;
+    }
+
+    */
+
+    .hi-nav a  {
+        padding-left: 40px;
+        text-decoration: none;
+        color: inherit;
+    }
+    .hi-h2{
+        margin-left: 40px;
+
+
+    }
+    .hi-normal-h2{
+        margin-left: 40px;
+        font-weight: normal;
+    }
+    .hi-p{
+        margin-left: 40px;  font-size: 24px;
+    }
+    .hi-not-correct-p{
+
+        color: red;
+    }
+    .hi-correct-p{
+
+        color: rgb(0, 255, 21);
+    }
+    .hi-head-banner {
+        background-color: #333;
+        color: white;
+        text-align: left;
+        padding: 10px 0;
+        padding-left: 40px;
+        width: 100%;
+       /* max-width: 1200px;
+        margin: 0 auto;*/
+    }
+
+    .no-bullets {
+        list-style-type: none;
+        padding-left: 0;
+    }
+.hi-nav {
+    background-color: white; /* Білий фон для навігації */
+    padding: 20px; /* Внутрішні відступи */
+    border-radius: 10px; /* Радіус країв */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Легке затемнення для тіні */
+}
+.hi-nav ul{background-color: white;  }
+
+.no-bullets {
+    list-style-type: none; /* Зняти маркери */
+    padding: 0; /* Видалити відступи */
+    margin: 0; /* Зняти відступи */
+}
+
+.no-bullets li {
+    margin-bottom: 10px; /* Відстань між елементами списку, схоже на <br> */
+}
+
+.no-bullets li a {
+    text-decoration: none; /* Зняти підкреслення */
+    color: #2c3e50; /* Колір тексту */
+    font-size: 18px; /* Розмір шрифту */
+    padding: 10px; /* Внутрішні відступи */
+    display: inline-block; /* Встановлює елементи в рядок */
+    transition: background-color 0.3s ease; /* Ефект при наведенні */
+}
+
+.no-bullets li a:hover {
+    background-color: #f0f0f0; /* Легке затемнення фону при наведенні */
+}
+

@@ -1,14 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Posts</title>
-</head>
-<body>
+
+{% extends "base.html" %}
+{% block title %} Post {% endblock%}
+{% block content %}
+
+
+
+
     <h1>Post № {{ post["id"] }} - {{ post["title"] }} </h1>
 
-    <p>{{ post.get('content') }}</p>
-    <a href="/posts">Return posts</a>
-</body>
-</html>
+    <p>{{ post.get('content') }}</p> 
+    <a href="{{ url_for("posts.get_posts")}}">Return posts</a>
+
+
+    {% endblock %}

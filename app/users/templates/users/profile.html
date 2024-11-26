@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+
+{% block title %}Greeting Page{% endblock %}
+
+{% block content %}
+<!-- Динамічні стилі для кольорової теми -->
+<style>
+    /* Зміна теми на темну */
+    {% if color_scheme == 'dark' %}
+        body {
+            background-color: #333;
+            color: #fff;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .login-container, .form-section, .container {
+            background-color: #444;
+            color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-light {
+            background-color: #fff;
+            color: #333;
+            border: 2px solid #444;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-dark {
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #333;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-light:hover {
+            background-color: #ccc;
+        }
+
+        .btn-dark:hover {
+            background-color: #444;
+        }
+    {% else %}
+        /* Зміна теми на світлу */
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .login-container, .form-section, .container {
+            background-color: #fff;
+            color: #333;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-light {
+            background-color: #f8f9fa;
+            color: #333;
+            border: 2px solid #ccc;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-dark {
+            background-color: #007bff;
+            color: #fff;
+            border: 2px solid #0069d9;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-light:hover {
+            background-color: #e2e6ea;
+        }
+
+        .btn-dark:hover {
+            background-color: #0056b3;
+        }
+    {% endif %}
+
+    /* Загальні стилі */
+    body {
+        font-family: 'Arial', sans-serif;
+        padding: 20px;
+        margin: 0;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    h1 {
+        #color: #333;
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        margin: 10px 0;
+        border-radius: 5px;
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        color: white;
+    }
+
+    .btn-warning:hover {
+        background-color: #e0a800;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+td {
+    max-width: 200px; /* Обмеження ширини */
+    overflow-x: auto; /* Прокрутка по горизонталі */
+    white-space: nowrap; /* Забороняє перенесення тексту */
+}
+
+
+    .form-section {
+        margin-bottom: 30px;
+    }
+
+    .color-scheme-buttons form button {
+        width: auto;
+        display: inline-block;
+    }
+
+    .color-scheme-buttons h2 {
+        margin-top: 0;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    input[type="text"] {
+        width: 70%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    input[type="text"]:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+</style>
+
+
+<!-- Зміст сторінки -->
+<div class="container">
+    <h1>Привіт, {{ username }}</h1>
+
+    <a href="{{ url_for('users.logout') }}" class="btn btn-danger">Вийти</a>
+
+    <!-- Вибір кольорової схеми -->
+    <div class="color-scheme-buttons form-section">
+        <h2><b>Вибір кольорової схеми:</b></h2>
+        <form action="{{ url_for('users.set_color_scheme') }}" method="post">
+            <button type="submit" name="color_scheme" value="light" class="btn btn-light">Світла тема</button>
+            <button type="submit" name="color_scheme" value="dark" class="btn btn-dark">Темна тема</button>
+        </form>
+    </div>
+
+    <!-- Форма для додавання куків -->
+    <div class="form-section">
+        <h2><b>Додати кукі:</b></h2>
+        <form action="{{ url_for('users.set_cookie') }}" method="post">
+            <div class="form-group">
+                <label for="key_cookie">Ключ кукі:</label>
+                <input type="text" id="key_cookie" name="key_cookie" required>
+            </div>
+            <div class="form-group">
+                <label for="value_cookie">Значення кукі:</label>
+                <input type="text" id="value_cookie" name="value_cookie" required>
+            </div>
+            <div class="form-group">
+                <label for="time_cookie">Термін дії (сек):</label>
+                <input type="text" id="time_cookie" name="time_cookie" required>
+            </div>
+            <button type="submit" class="btn btn-success">Додати кукі</button>
+        </form>
+    </div>
+
+    <!-- Форма для видалення куків -->
+    <div class="form-section">
+        <h2><b>Видалити кукі за ключем:</b></h2>
+        <form action="{{ url_for('users.delete_cookie') }}" method="post">
+            <label for="value_delete_cookie">Ключ кукі для видалення:</label><br>
+            <input type="text" name="value_delete_cookie" required><br><br>
+            <button type="submit" class="btn btn-warning">Видалити кукі за ключем</button><br><br>
+        </form>
+    </div>
+
+    <!-- Форма для видалення всіх куків -->
+    <div class="form-section">
+        <h2><b>Видалити всі куки:</b></h2>
+        <form action="{{ url_for('users.delete_all_cookie') }}" method="post">
+            <button type="submit" class="btn btn-danger">Видалити всі куки</button>
+        </form>
+    </div>
+
+    <!-- Список куків -->
+    <div class="form-section">
+        <h2>Список куків</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Ключ</th>
+                    <th>Значення</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cookie_name, cookie_value in cookies.items() %}
+                    {% if cookie_name != 'color_scheme' %}
+                        <tr>
+                            <td>{{ cookie_name }}</td>
+                            <td>{{ cookie_value }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
