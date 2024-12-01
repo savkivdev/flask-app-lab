@@ -10,4 +10,5 @@ class PostForm(FlaskForm):
     is_active = BooleanField('Active Post')
     publish_date = DateTimeLocalField('Publish Date', format='%Y-%m-%dT%H:%M', default=datetime.now())
     category = SelectField('Category', choices=CATEGORIES, validators=[DataRequired()])
+    author = StringField('author')
     submit = SubmitField('Sumbit')
