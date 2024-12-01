@@ -1,11 +1,14 @@
-from urllib import request
-
 from . import post_bp
-from flask import render_template,redirect, url_for, abort, flash, session
+from flask import render_template, abort, flash, redirect, url_for, session
+from .forms import PostForm
 import json
 import os
-from .forms import PostForm
 from datetime import datetime
+
+from .forms import PostForm
+from .models import Post
+from app import db
+
 
 POSTS_FILE_PATH = 'app/posts/posts.json'
 
