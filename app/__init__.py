@@ -18,10 +18,10 @@ def create_app(config_name="config"):
     migrate.init_app(app,db)
     with app.app_context():
         from . import views
-
+        from .users.models import User
         from .posts import post_bp
         from .users import users_bp
         app.register_blueprint(post_bp)
         app.register_blueprint(users_bp, url_prefix="/users")
-        #from app.posts.models import
+       
     return app
