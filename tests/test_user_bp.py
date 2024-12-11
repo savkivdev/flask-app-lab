@@ -1,5 +1,5 @@
 import unittest
-from app import app  # Переконайтеся, що імпортували ваш Flask-додаток
+from app import app  
 
 
 class FlaskAppTestCase(unittest.TestCase):
