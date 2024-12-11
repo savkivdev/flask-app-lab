@@ -1,0 +1,15 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container">
+    <h2>Профіль користувача</h2>
+    <div class="profile-details">
+      <p><strong>Ім'я користувача:</strong> {{ user.username }}</p>
+      <p><strong>Електронна пошта:</strong> {{ user.email }}</p>
+      <!-- Додаткові поля можна додати тут -->
+    </div>
+
+    <a href="{{ url_for('users.logout') }}" class="btn btn-primary">Вийти</a>
+  </div>
+{% endblock %}

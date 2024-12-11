@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Список зареєстрованих користувачів</h1>
+  
+  {% if users_count == 0 %}
+    <p>Немає зареєстрованих користувачів.</p>
+  {% else %}
+    <p>Зареєстровано {{ users_count }} користувачів:</p>
+    <ul>
+      {% for user in users %}
+        <li>{{ user.username }} ({{ user.email }})</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  
+{% endblock %}
