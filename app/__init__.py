@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from sqlalchemy.orm import DeclarativeBase
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-
+import os
 # Оголошення базового класу для моделей
 class Base(DeclarativeBase):
     pass
@@ -19,7 +19,7 @@ def create_app(config_name="config"):
     # Створення Flask додатку
     app = Flask(__name__)
     app.config.from_object(config_name)  # Завантажуємо конфігурацію
-
+    app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static/images/profile_pics')
     # Ініціалізація bcrypt, бази даних та міграцій
     bcrypt.init_app(app)
     db.init_app(app)

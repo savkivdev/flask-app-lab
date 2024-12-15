@@ -125,17 +125,35 @@ def login():
     return render_template('login.html', form=form)
 
 from flask_login import current_user, login_required
-@users_bp.route('/account')
+from flask import render_template, redirect, url_for, flash
+
+from app.users import users_bp
+@users_bp.route('/account', methods=['GET', 'POST'])
 @login_required  # Захищаємо маршрут від неавторизованих користувачів
 def account():
-    if current_user.is_authenticated:
-        flash("Ви зайшли успішно!", "success")
-        return render_template("account.html", user=current_user)
-    else:
-        flash("Спочатку увійдіть у аккаунт.", "warning")
-        return redirect(url_for("users.login"))
+    # Передаємо current_user при створенні форми
+    form = UpdateAccountForm(current_user=current_user)
+    change_password_form = ChangePasswordForm()  # Додано форма для зміни пароля
 
-    
+    if form.validate_on_submit():  # Перевіряємо, чи була форма надіслана та є валідною
+        # Оновлення даних користувача
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.about_me = form.about_me.data  # Оновлення опису
+
+        if form.profile_picture.data:
+            # Обробка нового профільного зображення
+            picture_file = save_picture(form.profile_picture.data)  # Припустимо, у вас є функція save_picture для обробки файлів
+            current_user.profile_picture = picture_file
+
+        db.session.commit()  # Збереження змін у базі даних
+        flash("Ваші дані були успішно оновлені!", "success")
+        return redirect(url_for('users.account'))
+
+    return render_template("account.html", user=current_user, form=form, change_password_form=change_password_form)
+
+from flask import current_app
+
 from flask_login import logout_user
 
 @users_bp.route('/logout')
@@ -143,6 +161,7 @@ def logout():
     logout_user()
     flash('Ви вийшли з системи', 'info')
     return redirect(url_for('users.login'))
+import os
 
     
 @users_bp.route('/users_list')
@@ -152,3 +171,75 @@ def users_list():
     if not users:
         flash("Немає зареєстрованих користувачів.", "info")
     return render_template('users_list.html', users=users, users_count=len(users))
+from app.users.forms import UpdateAccountForm
+@users_bp.route('/update_account', methods=['POST'])
+@login_required
+def update_account():
+    form = UpdateAccountForm(current_user=current_user)
+
+    if form.validate_on_submit():
+        # Оновлення даних профілю користувача
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.about_me = form.about_me.data
+
+        # Завантаження нового фото профілю
+        if form.profile_picture.data:  # Використовуємо profile_picture замість picture
+            picture_file = save_picture(form.profile_picture.data)  # Викликаємо функцію для збереження фото
+            current_user.profile_image = picture_file
+
+        # Збереження змін у базу даних
+        db.session.commit()
+        flash('Ваш профіль оновлено!', 'success')
+        return redirect(url_for('users.account'))  # Повертаємо на сторінку профілю
+    
+    # Якщо форма не пройшла валідацію, повертаємо на сторінку профілю з помилками
+    return render_template('users/update_profile.html', title='Оновити профіль', form=form)
+
+
+
+from app.users.forms import ChangePasswordForm
+@users_bp.route('/change_password', methods=['POST'])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+
+    if form.validate_on_submit():
+        # Перевірка поточного пароля
+        if not check_password_hash(current_user.password, form.old_password.data):
+            flash('Неправильний поточний пароль.', 'danger')
+            return redirect(url_for('users.account'))
+        
+        # Перевірка нового пароля та підтвердження
+        if form.new_password.data != form.confirm_password.data:
+            flash('Новий пароль і підтвердження не збігаються.', 'danger')
+            return redirect(url_for('users.account'))
+        
+        # Оновлення пароля користувача
+        current_user.password = generate_password_hash(form.new_password.data)
+        db.session.commit()
+        
+        # Повторне входження користувача після зміни пароля
+        login_user(current_user)
+        
+        flash('Ваш пароль успішно змінено!', 'success')
+        return redirect(url_for('users.account'))
+    
+    # Якщо форма недійсна, повертаємо помилки
+    flash('Не вдалося змінити пароль. Перевірте введені дані.', 'danger')
+    return redirect(url_for('users.account'))
+
+
+
+
+from werkzeug.utils import secure_filename
+def save_picture(picture):
+    # Створюємо унікальне ім'я для файлу, щоб уникнути конфліктів
+    picture_fn = secure_filename(picture.filename)
+    picture_path = os.path.join(current_app.config['UPLOAD_FOLDER'], picture_fn)
+    
+    # Збереження фото в зазначену директорію
+    picture.save(picture_path)
+    
+    # Повертаємо ім'я файлу для подальшого використання
+    return picture_fn

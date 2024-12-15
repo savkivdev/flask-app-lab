@@ -1,15 +1,97 @@
-
 {% extends "base.html" %}
 
+{% block title %}Профіль користувача{% endblock %}
+
 {% block content %}
-  <div class="container">
-    <h2>Профіль користувача</h2>
-    <div class="profile-details">
-      <p><strong>Ім'я користувача:</strong> {{ user.username }}</p>
-      <p><strong>Електронна пошта:</strong> {{ user.email }}</p>
-      <!-- Додаткові поля можна додати тут -->
+<div class="container">
+  <h2>Профіль користувача</h2>
+  
+  <!-- Відображення поточного фото профілю -->
+  <div class="profile-image">
+    <img src="{{ url_for('static', filename='images/' + (user.image_file or 'default.jpg')) }}" alt="Фото профілю" class="img-thumbnail" style="width: 150px; height: 150px;">
+
+  </div>
+
+  <!-- Виведення поточного імені користувача -->
+  <div class="profile-info">
+    <p><strong>Ім'я користувача:</strong> {{ user.username }}</p>
+    <p><strong>Електронна пошта:</strong> {{ user.email }}</p>
+    <p><strong>Про себе:</strong> {{ user.about_me or 'Це поле порожнє.' }}</p>
+    <p><strong>Останній вхід:</strong> {{ user.last_seen.strftime('%Y-%m-%d %H:%M:%S') if user.last_seen else 'Ніколи' }}</p>
+
+  </div>
+
+  <!-- Форма для оновлення профілю -->
+  <form method="POST" enctype="multipart/form-data" action="{{ url_for('users.update_account') }}">
+    {{ form.hidden_tag() }}
+
+    <!-- Поле для нового імені користувача -->
+    <div class="form-group">
+      {{ form.username.label(class="form-label") }}
+      {{ form.username(class="form-control") }}
+      {% for error in form.username.errors %}
+        <small class="form-text text-danger">{{ error }}</small>
+      {% endfor %}
     </div>
 
-    <a href="{{ url_for('users.logout') }}" class="btn btn-primary">Вийти</a>
-  </div>
+    <!-- Поле для нового email -->
+    <div class="form-group">
+      {{ form.email.label(class="form-label") }}
+      {{ form.email(class="form-control") }}
+      {% for error in form.email.errors %}
+        <small class="form-text text-danger">{{ error }}</small>
+      {% endfor %}
+    </div>
+
+    <!-- Поле для нового опису користувача -->
+    <div class="form-group">
+      {{ form.about_me.label(class="form-label") }}
+      {{ form.about_me(class="form-control") }}
+      {% for error in form.about_me.errors %}
+        <small class="form-text text-danger">{{ error }}</small>
+      {% endfor %}
+    </div>
+
+    <!-- Поле для завантаження нового фото -->
+    <div class="form-group">
+      {{ form.profile_picture.label(class="form-label") }}
+      {{ form.profile_picture(class="form-control-file") }}
+      {% for error in form.profile_picture.errors %}
+        <small class="form-text text-danger">{{ error }}</small>
+      {% endfor %}
+    </div>
+
+    <!-- Кнопка для оновлення профілю -->
+    <div class="form-group">
+      {{ form.submit(class="btn btn-primary") }}
+    </div>
+  </form>
+
+  <h3>Змінити пароль</h3>
+
+  <!-- Форма для зміни пароля -->
+  <form method="POST" action="{{ url_for('users.change_password') }}">
+    {{ change_password_form.hidden_tag() }}
+
+    <div class="form-group">
+      {{ change_password_form.old_password.label }}
+      {{ change_password_form.old_password(class="form-control") }}
+    </div>
+    <div class="form-group">
+      {{ change_password_form.new_password.label }}
+      {{ change_password_form.new_password(class="form-control") }}
+    </div>
+    <div class="form-group">
+      {{ change_password_form.confirm_password.label }}
+      {{ change_password_form.confirm_password(class="form-control") }}
+    </div>
+
+    <!-- Кнопка для зміни пароля -->
+    <div class="form-group">
+      {{ change_password_form.submit(class="btn btn-secondary") }}
+    </div>
+  </form>
+<br> <br>
+  <a href="{{ url_for('users.logout') }}" class="btn btn-primary">Вийти</a>
+</div>
 {% endblock %}
